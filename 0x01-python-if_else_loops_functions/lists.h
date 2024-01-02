@@ -1,9 +1,12 @@
 #ifndef LISTS_H
 #define LISTS_H
 
-/**
- * Your function prototypes and any necessary includes can be added here
- */
+def islower(c):
+def uppercase(str):
+def print_last_digit(number):
+def add(a, b):
+def pow(a, b):
+
 
 #endif /* LISTS_H */
 
