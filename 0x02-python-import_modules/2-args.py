@@ -6,10 +6,11 @@ def print_args():
         print("0 arguments.")
     elif num_args == 1:
         print("1 argument:")
-        print("1: {}".format(argv[1]))
+        print(f"1: {argv[1]}")
     else:
-        print("{} arguments:".format(num_args))
-        for i in range(1, len(argv)):
-            print("{}: {}".format(i, argv[i]))
+        print(f"{num_args} arguments:")
+        for i, arg in enumerate(argv[1:], start=1):
+            print(f"{i}: {arg}")
+
 if __name__ == "__main__":
     print_args()
