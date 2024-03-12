@@ -1,3 +1,2 @@
--- List all databases
-SELECT schema_name FROM information_schema.schemata;
-
+-- Script that lists all databases of your MySQL server.
+SHOW DATABASES;
