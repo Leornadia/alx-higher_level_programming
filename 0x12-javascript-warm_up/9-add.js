@@ -1,13 +1,7 @@
 #!/usr/bin/node
-function add(a, b) {
-  return parseInt(a) + parseInt(b);
+function add (a, b) {
+  const c = a + b;
+  console.log(c);
 }
-const arg1 = process.argv[2];
-const arg2 = process.argv[3];
 
-if (isNaN(arg1) || isNaN(arg2)) {
-  console.log('NaN');
-} else {
-  const sum = add(arg1, arg2);
-  console.log(sum);
-}
+add(Number(process.argv[2]), Number(process.argv[3]));
