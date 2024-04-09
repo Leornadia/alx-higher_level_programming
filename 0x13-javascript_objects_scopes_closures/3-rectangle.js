@@ -1,22 +1,19 @@
 #!/usr/bin/node
 class Rectangle {
-  constructor(w, h) {
-    if (w > 0 && h > 0 && w === parseInt(w) && h === parseInt(h)) {
+  constructor (w, h) {
+    if ((w > 0) && (h > 0)) {
       this.width = w;
       this.height = h;
-    } else {
-      this.width = undefined;
-      this.height = undefined;
     }
   }
 
-  print() {
-    if (this.width === undefined || this.height === undefined) {
-      return;
-    }
-
+  print () {
     for (let i = 0; i < this.height; i++) {
-      console.log('X'.repeat(this.width));
+      let s = '';
+      for (let j = 0; j < this.width; j++) {
+        s += 'X';
+      }
+      console.log(s);
     }
   }
 }
