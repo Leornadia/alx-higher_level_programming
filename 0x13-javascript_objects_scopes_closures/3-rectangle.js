@@ -1,0 +1,24 @@
+#!/usr/bin/node
+class Rectangle {
+  constructor(w, h) {
+    if (w > 0 && h > 0 && w === parseInt(w) && h === parseInt(h)) {
+      this.width = w;
+      this.height = h;
+    } else {
+      this.width = undefined;
+      this.height = undefined;
+    }
+  }
+
+  print() {
+    if (this.width === undefined || this.height === undefined) {
+      return;
+    }
+
+    for (let i = 0; i < this.height; i++) {
+      console.log('X'.repeat(this.width));
+    }
+  }
+}
+
+module.exports = Rectangle;
