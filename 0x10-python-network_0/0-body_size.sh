@@ -1,12 +1,11 @@
 #!/bin/bash
-# This script takes a URL as an argument, sends a request to that URL using curl, and displays the size of the response body in bytes.
+# This script takes a URL as input, sends a GET request to that URL using curl, and displays the size of the response body in byte 
 
-if [ -z "$1" ]; then
-    echo "Usage: $0 <url>"
-    exit 1
-fi
+# Send request to URL
+response=$(curl -s $1)
 
-response=$(curl -s "$1")
+# Get size of response body
 size=${#response}
 
-echo "$size"
+# Print size in bytes
+echo $size
