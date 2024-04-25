@@ -1,6 +1,7 @@
 #!/bin/bash
-# This script sends a request to a URL and displays the size of the response body in bytes
+# Script that takes in a URL, sends a request to that URL, and displays the size of the body of the response
 
-response=$(curl -s "$1") # Send a silent request to the URL and store the response
-size=${#response} # Get the length of the response string
-echo "$size" # Print the size of the response body
+url=$1
+body_size=$(curl -s -w "%{size_download}\n" -o /dev/null $url)
+echo $body_size
+
