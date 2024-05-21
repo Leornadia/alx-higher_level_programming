@@ -2,29 +2,53 @@
 
 const request = require('request');
 
+if (process.argv.length <= 2) {
+  console.log('Usage: ./101-starwars_characters.js movieId');
+  process.exit(1);
+}
+
 const movieId = process.argv[2];
+const apiUrl = `https://swapi-api.alx-tools.com/api/films/${movieId}`;
 
-const apiUrl = `https://swapi.dev/api/films/${movieId}/`;
+request(apiUrl, (error, response, body) => {
+  if (error) {
+    console.log(error);
+    return;
+  }
 
-//  the 'request' module to perform an HTTP GET request to the Star Wars API URL.
-request(apiUrl, function (error, response, body) {
-  // Check if there was no error during the HTTP request
-  if (!error && response.statusCode === 200) {
-    // Parse the JSON response bod
+  if (response.statusCode === 200) {
     const movieData = JSON.parse(body);
-    // create an array of promises that fetch the data for each individual character.
-    const characterPromises = movieData.characters.map((characterUrl) => {
-      return new Promise((resolve, reject) => {
-        // Use another 'request' to fetch the data for the individual character.
-        request(characterUrl, function (charError, charResponse, charBody) {
-          // Check if there was no error during the HTTP request
-          if (!charError && charResponse.statusCode === 200) {
-            // Parse the JSON response body
-            const characterData = JSON.parse(charBody);
-            // Resolve the promise with the name of the character.
-            resolve(characterData.name);
-          } else {
-            // reject the promise with the error message if  there was an error during the HTTP request
-            reject(new Error(`Error fetching character data: ${charError}`));
-          }
+    const charactersUrls = movieData.characters;
 
+    if (charactersUrls.length === 0) {
+      console.log('No characters found for this movie.');
+      return;
+    }
+
+    const getCharacterName = (url, callback) => {
+      request(url, (error, response, body) => {
+        if (error) {
+          callback(null, null);
+          return;
+        }
+
+        if (response.statusCode === 200) {
+          const characterData = JSON.parse(body);
+          callback(null, characterData.name);
+        } else {
+          callback(null, null);
+        }
+      });
+    };
+
+    charactersUrls.forEach((url) => {
+      getCharacterName(url, (error, name) => {
+        if (name !== null) {
+          console.log(name);
+        }
+      });
+    });
+  } else {
+    console.log(`Error: ${response.statusCode}`);
+  }
+});

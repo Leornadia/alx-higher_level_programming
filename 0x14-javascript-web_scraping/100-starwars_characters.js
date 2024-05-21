@@ -2,28 +2,58 @@
 
 const request = require('request');
 
+if (process.argv.length <= 2) {
+  console.log('Usage: ./100-starwars_characters.js movieId');
+  process.exit(1);
+}
+
 const movieId = process.argv[2];
-const apiUrl = `https://swapi.dev/api/films/${movieId}/`;
+const apiUrl = `https://swapi-api.alx-tools.com/api/films/${movieId}`;
 
-request(apiUrl, function (error, response, body) {
-  if (!error && response.statusCode === 200) {
+request(apiUrl, (error, response, body) => {
+  if (error) {
+    console.log(error);
+    return;
+  }
+
+  if (response.statusCode === 200) {
     const movieData = JSON.parse(body);
+    const charactersUrls = movieData.characters;
 
-    console.log(`Characters of "${movieData.title}":`);
+    if (charactersUrls.length === 0) {
+      console.log('No characters found for this movie.');
+      return;
+    }
 
-    movieData.characters.forEach((characterUrl) => {
-      request(characterUrl, function (charError, charResponse, charBody) {
-        if (!charError && charResponse.statusCode === 200) {
-          const characterData = JSON.parse(charBody);
-
-          console.log(characterData.name);
-        } else {
-          console.error('Error fetching character data:', charError);
-        }
+    const getAllCharacters = (urls) => {
+      const promises = urls.map((url) => {
+        return new Promise((resolve, reject) => {
+          request(url, (error, response, body) => {
+            if (error) {
+              reject(error);
+            } else if (response.statusCode === 200) {
+              const characterData = JSON.parse(body);
+              resolve(characterData.name);
+            } else {
+              reject(`Error: ${response.statusCode}`);
+            }
+          });
+        });
       });
-    });
+
+      return Promise.all(promises);
+    };
+
+    getAllCharacters(charactersUrls)
+      .then((characterNames) => {
+        characterNames.forEach((name) => {
+          console.log(name);
+        });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   } else {
-    console.error('Error fetching movie data:', error);
+    console.log(`Error: ${response.statusCode}`);
   }
 });
-
