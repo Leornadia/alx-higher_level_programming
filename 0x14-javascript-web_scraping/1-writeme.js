@@ -1,22 +1,18 @@
-#!/usr/bin/node
+#!/usr/bin/python3
 
-const fs = require('fs');
+def write_to_file(file_path, content):
+    try:
+        with open(file_path, 'w', encoding='utf-8') as file:
+            file.write(content)
+        print(f"Content successfully written to {file_path}")
+    except Exception as e:
+        print(f"Error writing to {file_path}: {e}")
 
-function writeToFile(filePath, content) {
-    fs.writeFile(filePath, content, 'utf8', (err) => {
-        if (err) {
-            console.error(`Error writing to ${filePath}: ${err}`);
-        } else {
-            console.log(`Content successfully written to ${filePath}`);
-        }
-    });
-}
-
-if (process.argv.length !== 4) {
-    console.error('Usage: node script.js <file_path> <content>');
-} else {
-    const filePath = process.argv[2];
-    const content = process.argv[3];
-    writeToFile(filePath, content);
-}
+if __name__ == "__main__":
+    import sys
+    if len(sys.argv) != 3:
+        print("Usage: python script.py <file_path> <content>")
+    else:
+        file_path, content = sys.argv[1], sys.argv[2]
+        write_to_file(file_path, content)
 
